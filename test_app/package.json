@@ -9,7 +9,10 @@
     "@grpc/grpc-js": "^0.3.6",
     "google-protobuf": "^3.7.1",
     "grpc": "^1.19.0",
-    "grpc-web": "^1.0.4"
+    "grpc-web": "^1.0.4",
+    "web3-js": "^1.0.5-beta.26",
+    "ethereumjs-abi": "^0.6.5",
+    "ethjs": "^0.3.9"
   },
   "scripts": {
     "start": "react-scripts start",
