@@ -5,8 +5,6 @@ import Eth from 'ethjs';
 const { PaymentChannelStateServiceClient } = require('./state_service_grpc_web_pb');
 const { ChannelStateRequest } = require('./state_service_pb.js');
 
-var grpc = require('grpc');
-
 let web3 = window.web3;
 
 class App extends Component {
@@ -47,10 +45,19 @@ class App extends Component {
     var msg = this.composeSHA3Message(["uint256"], [parseInt(this.state.channel_id)]);
     window.ethjs.personal_sign(msg, web3.eth.defaultAccount)
       .then((signed) => {
-        var client = new PaymentChannelStateServiceClient(this.state.endpoint, grpc.ssl, null);
+        var client = new PaymentChannelStateServiceClient(this.state.endpoint, null, null);
         const request = new ChannelStateRequest();
+
+        var stripped = signed.substring(2, signed.length)
+        var byteSig = Buffer.from(stripped, 'hex');
+        let buff = new Buffer(byteSig);
+        let base64data = buff.toString('base64')
+
+        console.log("signed:", signed);
+        console.log("byteSig:", byteSig);
+
         request.setChannelId(this.state.channel_id);
-        request.setSignature(signed);
+        request.setSignature(byteSig);
         client.getChannelState(request, {}, (err, response) => {
           if (response == null) {
             console.log(err)
