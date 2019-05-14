@@ -1,11 +1,30 @@
+var PROTO_PATH = __dirname + '/state_service.proto';
 var grpc = require('grpc');
-var pingPongProto = grpc.load('ping_pong.proto');
+const fs = require('fs');
+var protoLoader = require('@grpc/proto-loader');
+// Suggested options for similarity to existing grpc.load behavior
+var packageDefinition = protoLoader.loadSync(
+    PROTO_PATH,
+    {
+        keepCase: true,
+        longs: String,
+        enums: String,
+        defaults: true,
+        oneofs: true
+    });
+
+var escrow = grpc.loadPackageDefinition(packageDefinition).escrow;
+
 var server = new grpc.Server();
 
-server.addService(pingPongProto.pingpong.PingPongService.service, {
-    pingPong: function (call, callback) {
+server.addService(escrow.PaymentChannelStateService.service, {
+    getChannelState: function (call, callback) {
         console.log("Request")
-        return callback(null, { pong: "Pong" })
+        return callback(null, {
+            current_nonce: 1,
+            current_signed_amount: Buffer.from("10", 'hex'),
+            current_signature: 0x1234
+        });
     }
 });
 

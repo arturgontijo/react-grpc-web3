@@ -20,7 +20,7 @@ const credentials = grpc.credentials.createSsl(
 );
 
 var escrow = grpc.loadPackageDefinition(packageDefinition).escrow;
-var stub = new escrow.PaymentChannelStateService('https://bh.singularitynet.io:7052', credentials);
+var stub = new escrow.PaymentChannelStateService('localhost:7000', grpc.credentials.createInsecure());
 
 var request = {
     channel_id: 2093,
