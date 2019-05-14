@@ -21,9 +21,9 @@ server.addService(escrow.PaymentChannelStateService.service, {
     getChannelState: function (call, callback) {
         console.log("Request")
         return callback(null, {
-            current_nonce: 1,
-            current_signed_amount: Buffer.from("10", 'hex'),
-            current_signature: 0x1234
+            current_nonce: Buffer.from("00", 'hex'),
+            current_signed_amount: Buffer.from("110", 'hex'),
+            current_signature: Buffer.from("1000010010", 'hex')
         });
     }
 });
